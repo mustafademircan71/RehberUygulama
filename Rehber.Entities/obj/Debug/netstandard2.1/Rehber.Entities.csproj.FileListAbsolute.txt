@@ -1,0 +1,9 @@
+C:\Users\Mustafa\Desktop\RehberUygulama\RehberUygulama\Rehber.Entities\bin\Debug\netstandard2.1\Rehber.Entities.deps.json
+C:\Users\Mustafa\Desktop\RehberUygulama\RehberUygulama\Rehber.Entities\bin\Debug\netstandard2.1\Rehber.Entities.dll
+C:\Users\Mustafa\Desktop\RehberUygulama\RehberUygulama\Rehber.Entities\bin\Debug\netstandard2.1\Rehber.Entities.pdb
+C:\Users\Mustafa\Desktop\RehberUygulama\RehberUygulama\Rehber.Entities\obj\Debug\netstandard2.1\Rehber.Entities.csprojAssemblyReference.cache
+C:\Users\Mustafa\Desktop\RehberUygulama\RehberUygulama\Rehber.Entities\obj\Debug\netstandard2.1\Rehber.Entities.AssemblyInfoInputs.cache
+C:\Users\Mustafa\Desktop\RehberUygulama\RehberUygulama\Rehber.Entities\obj\Debug\netstandard2.1\Rehber.Entities.AssemblyInfo.cs
+C:\Users\Mustafa\Desktop\RehberUygulama\RehberUygulama\Rehber.Entities\obj\Debug\netstandard2.1\Rehber.Entities.csproj.CoreCompileInputs.cache
+C:\Users\Mustafa\Desktop\RehberUygulama\RehberUygulama\Rehber.Entities\obj\Debug\netstandard2.1\Rehber.Entities.dll
+C:\Users\Mustafa\Desktop\RehberUygulama\RehberUygulama\Rehber.Entities\obj\Debug\netstandard2.1\Rehber.Entities.pdb

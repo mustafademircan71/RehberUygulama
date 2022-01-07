@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<br />
+<button id="btnListe" class="btn btn-warning">Liste</button>
+
+<a href="/Kullanici/Test">content</a>
+
+@section Scripts{
+    <script>
+       
+        $("#btnListe").click(function () {
+               
+            var list = [1, 2];
+                $.ajax({
+
+                    url: '@Url.Action("Test","Kullanici")',
+                    type: 'post',
+                    dataType: 'html',
+                    
+                    data: JSON.stringify(list),
+                    success: function (response) {
+                        debugger
+                        //window.location.href = "/Kullanici/Test";
+                        return response;
+                     }
+                });
+         
+        })
+    </script>
+ }

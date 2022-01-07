@@ -1,0 +1,82 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Giris</title>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/myCss.css" rel="stylesheet" />
+    <link href="~/lib/limonte-sweetalert2/sweetalert2.css" rel="stylesheet" />
+</head>
+<body class="text-center giris">
+
+
+
+    <main class="form-signin col-md-4 offset-md-4">
+
+        <img class="mb-4" src="~/lib/bootstrap-icons/icons/telephone-plus-fill.svg" alt="" width="72" height="57">
+
+        <h1 class="h3 mb-3 fw-normal">Lütfen Giriş Yapınız</h1>
+
+        <div class="form-floating ">
+            <input type="email" class="form-control girisInput" id="email" placeholder="Email">
+        </div>
+        <br />
+        <div class="form-floating">
+            <input type="password" class="form-control girisInput " id="password" placeholder="Şifre">
+
+        </div>
+        <br />
+
+        <button type="submit" id="btnGiris" class="btn btn-warning float-left buttonCss">Giriş Yap</button>
+
+        <a class="btn btn-danger float-right buttonCss" href="/kayıt-ol">Kayıt Ol</a>
+
+
+
+
+    </main>
+
+
+</body>
+</html>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#btnGiris").click(function () {
+            var vm = {
+                Email: $("#email").val(),
+                Password: $("#password").val()
+            };
+            var _data = JSON.stringify(vm);
+            $.ajax({
+                url: "/Kullanici/Giris",
+                method: "post",
+                contentType: "application/json",
+                dataType: "json",
+                data: _data,
+                success: function (resp) {
+                    if (resp.result) {
+                        window.location.href = "/ana-sayfa";
+                    }
+                    else {
+                        Swal.fire(
+                            'Hatalı Giriş',
+                            '',
+                            'error'
+                        )
+                    }
+                }
+            });
+        })
+    })
+</script>
+
+<script src="~/lib/limonte-sweetalert2/sweetalert2.js"></script>

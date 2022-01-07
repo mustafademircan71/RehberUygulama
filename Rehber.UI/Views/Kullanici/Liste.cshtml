@@ -1,0 +1,285 @@
+﻿@model List<TelefonRehberi>
+@{
+    ViewData["Title"] = "Liste";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Kullanici kullanici = Context.Session.GetObject<Kullanici>("ActiveKullanici");
+}
+<input type="hidden" id="kullaniciId" value="@kullanici.Id" />
+<br />
+
+<br />
+<div class="card">
+    <div class="card-body" style="background-color:linen;">
+        <table id="myTable" class="table table-warning table-striped">
+            <thead>
+                <tr>
+                    <th>Resim</th>
+                    <th>Ad Soyad</th>
+                    <th>Telefon Numarası</th>
+                    <th>Güncelle</th>
+                    <th>Sil</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="divGüncelleForm" data-backdrop="static" role="dialog" data-keyboard="false" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Rehber Düzenleme Formu</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <input id="rehberId" type="hidden" />
+                    <label for="exampleInputEmail1" class="form-label">Adı Ve Soyadı</label>
+                    <input type="text" class="form-control" id="adSoyadGuncelle" aria-describedby="emailHelp">
+
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Telefon Numarası</label>
+                    <input type="text" class="form-control" id="numaraGuncelle">
+                </div>
+                <div>
+                    <label for="formFileLg" class="form-label">Resim</label>
+                    <input class="form-control form-control-lg" name="resimGuncelle" id="resimGuncelle" type="file">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                <button id="btnKaydet" type="button" class="btn btn-primary">Kaydet</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/lib/datatables/js/jquery.dataTables.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.js"></script>
+
+    <script src="~/lib/limonte-sweetalert2/sweetalert2.js"></script>
+    <script>
+        var _data;
+        var kullaniciId = $("#kullaniciId").val();
+        $(function () {
+            TabloDoldur();
+
+
+        })
+        function TabloDoldur () {
+
+
+            var vm = $("#kullaniciId").val();
+
+            _url= "http://localhost:54660/api/Kullanici/" + vm;
+
+            $.ajax({
+                url: _url,
+                method: "Get",
+                dataType: "json",
+                success: function (telefonRehberi) {
+                    console.log(telefonRehberi);
+                    var rehberListe = $("#myTable tbody");
+                    rehberListe.empty();
+
+                    $(telefonRehberi).each(function (index, telefonRehberi) {
+                        rehberListe.append('<tr><td>   <img src="' + telefonRehberi.resimDosyasi + '" style="width:60px;"/> </td><td>' + telefonRehberi.adSoyad + '</td><td>' + telefonRehberi.telefonNumarasi + '</td> <td>  <button type="button" class="btn btn-warning" onClick="btnDuzenle(' + telefonRehberi.id + ')">Düzenle</button> </td> <td><button type="button"   class="btn btn-danger " onClick="btnSil(' + telefonRehberi.id + ')" >Sil</button> </td> </tr>');
+                    });
+
+                    $('#myTable').DataTable({
+                        language: {
+                            info: "_TOTAL_ kayıttan _START_ - _END_ kayıt gösteriliyor.",
+                            infoEmpty: "Gösterilecek hiç kayıt yok.",
+                            loadingRecords: "Kayıtlar yükleniyor.",
+                            lengthMenu: "Sayfada _MENU_ kayıt göster",
+                            zeroRecords: "Tablo boş",
+                            search: "Arama:",
+                            infoFiltered: "(toplam _MAX_ kayıttan filtrelenenler)",
+                            buttons: {
+                                copyTitle: "Panoya kopyalandı.",
+                                copySuccess: "Panoya %d satır kopyalandı",
+                                copy: "Kopyala",
+                                print: "Yazdır",
+                            },
+
+                            paginate: {
+                                first: "İlk",
+                                previous: "Önceki",
+                                next: "Sonraki",
+                                last: "Son"
+                            },
+                        }
+                    });
+
+                }
+            });
+
+
+        }
+
+        function btnDuzenle(id) {
+
+            _url = "http://localhost:54660/api/Kullanici/Detay?id=" + id
+
+            $.ajax({
+                url: _url,
+                method: "post",
+                dataType: "json",
+                contentType: "application/json",
+                data: { id: id },
+                success: function (resp) {
+                    $("#adSoyadGuncelle").val(resp.rehberInfo.adSoyad);
+                    $("#numaraGuncelle").val(resp.rehberInfo.telefonNumarasi);
+                    $("#rehberId").val(resp.rehberInfo.id);
+                }
+            });
+
+            $("#divGüncelleForm").modal("show");
+        }
+
+        $(function () {
+
+            $("#btnKaydet").click(function () {
+                
+                var formData = new FormData();
+                var dosya = $("#resimGuncelle")[0].files[0];
+                formData.append("resim", dosya);
+
+                $.ajax({
+                    url: "http://localhost:54660/api/Kullanici/Resim",
+                    method: "post",
+                    contentType: false,
+                    processData: false,
+                    data: formData,
+                    success: function (response) {
+                        if (response.result) {
+                            var vm = {
+                                Id: $("#rehberId").val(),
+                                AdSoyad: $("#adSoyadGuncelle").val(),
+                                TelefonNumarasi: $("#numaraGuncelle").val(),
+                                ResimDosyasi: response.photoPath
+                            };
+                            _data = JSON.stringify(vm);
+                            Guncelle_Kayit();
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Hata',
+                                text: response.message
+                            })
+                        }
+                    }
+                });
+              
+               
+               
+            });
+        });
+
+        function Guncelle_Kayit() {
+            $.ajax({
+                url: "http://localhost:54660/api/Kullanici/Duzenle",
+                method: "post",
+                contentType: "application/json",
+                data: _data,
+                success: function (resp) {
+                    if (resp.result) {
+                        Swal.fire(
+                            'Kayıt Güncellendi',
+                            '',
+                            'success'
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                                $("#myTable").DataTable().destroy();
+                                TabloDoldur();
+                            }
+                        })
+                    }
+                    else {
+                        Swal.fire(
+                            'Kayıt Eklenemedi',
+                            '',
+                            'error'
+                        )
+                    }
+                }
+
+            })
+        }
+
+        function btnSil(id) {
+
+            _url = "http://localhost:54660/api/Kullanici/Sil?id=" + id;
+
+            Swal.fire({
+                title: 'Silmek İstiyor musunuz?',
+                text: "Bu İşlemi Geri Alamayacaksınız!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Evet, Sil!',
+                cancelButtonText: 'Vazgeç'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+
+                    $.ajax({
+                        url: _url,
+                        method: "post",
+                        dataType: "json",
+                        data: { id: id },
+                        success: function (resp) {
+                            if (resp.result) {
+                                Swal.fire(
+                                    'Silindi!',
+                                    'Kişi Silindi',
+                                    'success'
+                                ).then((result) => {
+                                    if (result.isConfirmed) {
+                                        $("#myTable").DataTable().destroy();
+                                        TabloDoldur();
+                                    }
+                                })
+                            }
+                        }
+                    });
+                }
+
+
+            })
+
+        }
+
+        var vm = $("#kullaniciId").val();
+
+       
+
+    </script>
+
+
+
+
+
+}
+
+@section styles{
+
+    <link href="~/lib/datatables/css/dataTables.bootstrap.css" rel="stylesheet" />
+
+    <link href="~/lib/limonte-sweetalert2/sweetalert2.css" rel="stylesheet" />
+}
+

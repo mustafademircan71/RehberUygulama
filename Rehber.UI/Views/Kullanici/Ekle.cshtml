@@ -1,0 +1,104 @@
+﻿
+@{
+    ViewData["Title"] = "Ekle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Kullanici kullanici = Context.Session.GetObject<Kullanici>("ActiveKullanici");
+}
+<br />
+<div class=" col-md-4 offset-md-4">
+    <div id="divEkleForm">
+
+
+        <div class="mb-3">
+            <input id="kullaniciId" type="hidden" value="@kullanici.Id" />
+            <label for="exampleInputEmail1" class="form-label">Adı Ve Soyadı</label>
+            <input type="text" class="form-control" id="adSoyad" aria-describedby="emailHelp">
+
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Telefon Numarası</label>
+            <input type="text" class="form-control" id="numara">
+        </div>
+        <div>
+            <label for="formFileLg" class="form-label">Resim</label>
+            <input class="form-control form-control-lg" name="resimEkle" id="resimEkle" type="file">
+        </div>
+        <br />
+        <button type="submit" id="btnKaydet" class="btn btn-primary">Ekle</button>
+    </div>
+</div>
+
+@section Scripts{
+
+
+
+    <link href="~/lib/limonte-sweetalert2/sweetalert2.css" rel="stylesheet" />
+    <script>
+        var _data;
+
+             $("#btnKaydet").click(function () {
+
+                    var formData = new FormData();
+                    var dosya = $("#resimEkle")[0].files[0];
+                    formData.append("rehberResim", dosya);
+                    $.ajax({
+                        url: "http://localhost:54660/api/Kullanici/Resim",
+                        method: "post",
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {
+                            var vm = {
+                                AdSoyad: $("#adSoyad").val(),
+                                TelefonNumarasi: $("#numara").val(),
+                                KullaniciId: $("#kullaniciId").val(),
+                                ResimDosyasi: response.photoPath
+                            }
+                             _data = JSON.stringify(vm);
+                            Kaydet();
+                          
+                        }
+
+                    })
+            })
+
+        
+        function Kaydet() {
+            $.ajax({
+                url: "http://localhost:54660/api/Kullanici/Ekle",
+                contentType: "application/json",
+                method: "post",
+                dataType: "json",
+                data: _data,
+                success: function (resp) {
+                    if (resp.result) {
+                        Swal.fire(
+                            resp.messages,
+                            '',
+                            'success'
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "/liste";
+                            }
+                        })
+                    }
+                    else {
+                        Swal.fire(
+                            resp.messages,
+                            '',
+                            'error'
+                        )
+                    }
+                }
+
+            })
+
+
+        }
+    </script>
+}
+
+@section styles{
+    <script src="~/lib/limonte-sweetalert2/sweetalert2.js"></script>
+
+}

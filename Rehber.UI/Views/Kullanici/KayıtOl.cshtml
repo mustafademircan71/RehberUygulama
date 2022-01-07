@@ -1,0 +1,94 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Giris</title>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/myCss.css" rel="stylesheet" />
+    <link href="~/lib/limonte-sweetalert2/sweetalert2.css" rel="stylesheet" />
+</head>
+<body class="text-center giris">
+
+
+
+    <main class="form-signin col-md-4 offset-md-4">
+
+        <img class="mb-4" src="~/lib/bootstrap-icons/icons/patch-plus-fill.svg" alt="" width="72" height="57">
+
+        <h1 class="h3 mb-3 fw-normal">Kullanıcı Kayıt Formu</h1>
+
+        <div class="form-floating ">
+            <input type="email" class="form-control" id="email" placeholder="Email">
+        </div>
+        <br />
+        <div class="form-floating">
+            <input type="password" class="form-control" id="password" placeholder="Şifre">
+
+        </div>
+        <br />
+        <div class="form-floating ">
+            <input type="text" class="form-control" id="adSoyad" placeholder="Adı ve Soyadı">
+        </div>
+        <br />
+        <div class="form-floating ">
+            <input type="tel" class="form-control" id="telNo" placeholder="Telefon Numarası">
+        </div>
+        <br />
+
+        <button type="submit" id="btnKayit" class="btn btn-warning float-none">Kaydet</button>
+
+    </main>
+
+
+</body>
+</html>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+<script src="~/lib/limonte-sweetalert2/sweetalert2.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#btnKayit").click(function () {
+            var vm = {
+                Email: $("#email").val(),
+                Password: $("#password").val(),
+                TelefonNumarasi: $("#telNo").val(),
+                AdSoyad: $("#adSoyad").val()
+            };
+            var _data = JSON.stringify(vm);
+            $.ajax({
+                url: "http://localhost:54660/api/Kullanici/Kullanici_Ekle",
+                method: "post",
+                contentType: "application/json",
+                dataType: "json",
+                data: _data,
+                success: function (resp) {
+                    if (resp.result) {
+                        Swal.fire(
+                            'Kayıt Eklendi',
+                            '',
+                            'success'
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "/Kullanici/Giris";
+                            }
+                        })
+                    }
+                    else {
+                        Swal.fire(
+                            'Kayıt Eklenemedi',
+                            '',
+                            'error'
+                        )
+                    }
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Rehber.UI</title>
+    
+    <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="~/css/myCss.css" rel="stylesheet" />
+
+    @await RenderSectionAsync("styles", required: false)
+</head>
+<body style="background-color: linen;">
+
+    <header>
+        <div class="px-3 py-2 bg-dark text-white">
+            <div class="container ">
+                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                    <div class="col-6">
+                        <a href="/ana-sayfa" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
+                        <i class="bi bi-telephone-x-fill bi me-2" style="font-size:32px;"></i>
+
+                    </a>
+                    </div>
+                    <div class="col-6">
+
+                        <ul class="nav  justify-content-center my-md-0 text-small" style="float:right;">
+                            <li>
+                                <a href="/ana-sayfa" class="nav-link text-secondary text-center">
+                                    <i class="bi bi-house-door bi d-block mx-auto mb-1" style="font-size:24px;"></i>
+                                    Ana Sayfa
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/liste" class="nav-link text-white text-center">
+                                    <i class="bi bi-card-list bi d-block mx-auto mb-1" style="font-size:24px;"></i>
+                                    Rehber
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/ekle" class="nav-link text-white text-center">
+                                    <i class="bi bi-person-plus-fill bi d-block mx-auto mb-1" style="font-size:24px;"></i>
+                                    Ekle
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/cikis" class="nav-link text-white text-center">
+                                    <i class="bi bi-door-open-fill bi d-block mx-auto mb-1" style="font-size:24px;"></i>
+                                    Çıkış
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+
+
+
+
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+   
+    <script src="~/lib/jquery/jquery.js"></script>
+
+    <script src="~/lib/bootstrap/js/bootstrap.js"></script>
+
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

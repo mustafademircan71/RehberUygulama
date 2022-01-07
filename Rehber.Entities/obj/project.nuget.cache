@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "7rmKzbHMfD/cE3SYOGabPnhZfLSNKWCmz4nY5KmkTggheMwYK9wuA5au+am22rlrE+B5GFgWn9JiAhAOzB5dcQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Mustafa\\Desktop\\RehberUygulama\\RehberUygulama\\Rehber.Entities\\Rehber.Entities.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Mustafa\\.nuget\\packages\\system.componentmodel.annotations\\5.0.0\\system.componentmodel.annotations.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
